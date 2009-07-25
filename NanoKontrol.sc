@@ -122,25 +122,38 @@ NKController {
 		responder = CCResponder({|src, chan, num, vel| 
 			action.value(vel);  // to make explicit use of velocity, we pass it as a param
 		}, num:num);
-	
 	}
+	
+	removeResponders{
+		if (responder != nil, {responder.remove;}); // remove if already assigned
+	}
+	
 }
 
 NKButton : NKController {
 	
+	var pressResponder, releaseResponder;
+	
 	onPress{|action|
-		if (responder != nil, {responder.remove;}); // remove if already assigned
+		if (pressResponder != nil, {pressResponder.remove;}); // remove if already assigned
 
-		responder = CCResponder({|src, chan, num, vel| 
+		pressResponder = CCResponder({|src, chan, num, vel| 
 			if (vel == 127, {action.value()})
 		}, num:num);
-	
 	}
-	onRelease{|action|
-		if (responder != nil, {responder.remove;}); // remove if already assigned
 
-		responder = CCResponder({|src, chan, num, vel| 
+	onRelease{|action|
+		if (releaseResponder != nil, {releaseResponder.remove;}); // remove if already assigned
+
+		releaseResponder = CCResponder({|src, chan, num, vel| 
 			if (vel == 0, {action.value()})
 		}, num:num);
 	}
+	
+	removeResponders{
+		super.removeResponders();
+		if (pressResponder != nil, {pressResponder.remove;}); // remove if already assigned
+		if (releaseResponder != nil, {releaseResponder.remove;}); // remove if already assigned
+	}
+	
 }
