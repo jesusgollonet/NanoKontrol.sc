@@ -70,22 +70,22 @@ NanoKontrol {
 			\topBt8 -> NKController.new(30),
 			\topBt9 -> NKController.new(31),
 			
-			\bottomBt1 -> NKController.new(33),
-			\bottomBt2 -> NKController.new(34),
-			\bottomBt3 -> NKController.new(35),
-			\bottomBt4 -> NKController.new(36),
-			\bottomBt5 -> NKController.new(37),
-			\bottomBt6 -> NKController.new(38),
-			\bottomBt7 -> NKController.new(39),
-			\bottomBt8 -> NKController.new(40),
-			\bottomBt9 -> NKController.new(41),
+			\bottomBt1 -> NKButton.new(33),
+			\bottomBt2 -> NKButton.new(34),
+			\bottomBt3 -> NKButton.new(35),
+			\bottomBt4 -> NKButton.new(36),
+			\bottomBt5 -> NKButton.new(37),
+			\bottomBt6 -> NKButton.new(38),
+			\bottomBt7 -> NKButton.new(39),
+			\bottomBt8 -> NKButton.new(40),
+			\bottomBt9 -> NKButton.new(41),
 			
-			\playBt   -> NKController.new(45),
-			\stopBt   -> NKController.new(46),
-			\rectBt   -> NKController.new(44),
-			\rewindBt -> NKController.new(47),
-			\ffwBt    -> NKController.new(48),
-			\loopBt   -> NKController.new(49)
+			\playBt   -> NKButton.new(45),
+			\stopBt   -> NKButton.new(46),
+			\rectBt   -> NKButton.new(44),
+			\rewindBt -> NKButton.new(47),
+			\ffwBt    -> NKButton.new(48),
+			\loopBt   -> NKButton.new(49)
 		];	
 		
 	}
@@ -128,8 +128,19 @@ NKController {
 
 NKButton : NKController {
 	
-	onPress{}
-	onRelease{}
-	onToggle{}
+	onPress{|action|
+		if (responder != nil, {responder.remove;}); // remove if already assigned
+
+		responder = CCResponder({|src, chan, num, vel| 
+			if (vel == 127, {action.value()})
+		}, num:num);
 	
+	}
+	onRelease{|action|
+		if (responder != nil, {responder.remove;}); // remove if already assigned
+
+		responder = CCResponder({|src, chan, num, vel| 
+			if (vel == 0, {action.value()})
+		}, num:num);
+	}
 }
