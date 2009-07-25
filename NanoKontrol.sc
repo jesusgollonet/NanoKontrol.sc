@@ -24,8 +24,9 @@
 */
 /*
 	TODO: 
-		- add the rest of the controllers
-		- make the syntax more intuitive (n.button.onChanged)
+		x add the rest of the controllers
+		x make the syntax more intuitive (n.button.onChanged)
+		- implement scenes
 		
 */
 
@@ -58,19 +59,47 @@ NanoKontrol {
 			\knob7 -> NKController.new(20),
 			\knob8 -> NKController.new(21),
 			\knob9 -> NKController.new(22),
-
+			
+			\topBt1 -> NKController.new(23),
+			\topBt2 -> NKController.new(24),
+			\topBt3 -> NKController.new(25),
+			\topBt4 -> NKController.new(26),
+			\topBt5 -> NKController.new(27),
+			\topBt6 -> NKController.new(28),
+			\topBt7 -> NKController.new(29),
+			\topBt8 -> NKController.new(30),
+			\topBt9 -> NKController.new(31),
+			
+			\bottomBt1 -> NKController.new(33),
+			\bottomBt2 -> NKController.new(34),
+			\bottomBt3 -> NKController.new(35),
+			\bottomBt4 -> NKController.new(36),
+			\bottomBt5 -> NKController.new(37),
+			\bottomBt6 -> NKController.new(38),
+			\bottomBt7 -> NKController.new(39),
+			\bottomBt8 -> NKController.new(40),
+			\bottomBt9 -> NKController.new(41),
+			
+			\playBt   -> NKController.new(45),
+			\stopBt   -> NKController.new(46),
+			\rectBt   -> NKController.new(44),
+			\rewindBt -> NKController.new(47),
+			\ffwBt    -> NKController.new(48),
+			\loopBt   -> NKController.new(49)
 		];	
 		
 	}
 	
 	
-	/*
+	
 	doesNotUnderstand { arg selector ... args;
-		selector.postln;
-		args.postln;
-		//DoesNotUnderstandError(this, selector, args).throw;
+		
+		var controller = controllers.at(selector);
+		"the controller is".postln;
+		controller.postln;
+		^ controller ?? {super.doesNotUnderstand( selector, args)};
 	}
-	*/
+	
 	
 }
 
@@ -88,7 +117,6 @@ NKController {
 	}
 	
 	onChanged{|action|
-		
 		if (responder != nil, {responder.remove;}); // remove if already assigned
 
 		responder = CCResponder({|src, chan, num, vel| 
@@ -96,10 +124,9 @@ NKController {
 		}, num:num);
 	
 	}
-
 }
 
-NKFader : NKController {
+NKButton : NKController {
 	
 	onPress{}
 	onRelease{}
