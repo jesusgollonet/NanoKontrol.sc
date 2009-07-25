@@ -30,49 +30,39 @@
 */
 
 NanoKontrol {
+	
+	var <controllers;
 
-	var <faders;
-	var controllers;
-	var responders;
-	var <fader1;
-	var <button1;
 	*new{
 		^super.new.initNanoKontrol;
 	}
 	
 	initNanoKontrol{
-		faders = IdentityDictionary[
-			\fader1 -> 2,
-			\fader2 -> 3,
-			\fader3 -> 4,
-			\fader4 -> 5,
-			\fader5 -> 6,
-			\fader6 -> 8,
-			\fader7 -> 9,
-			\fader8 -> 12,
-			\fader9 -> 13
+		controllers = IdentityDictionary[
+			\fader1 -> NKController.new(2),
+			\fader2 -> NKController.new(3),
+			\fader3 -> NKController.new(4),
+			\fader4 -> NKController.new(5),
+			\fader5 -> NKController.new(6),
+			\fader6 -> NKController.new(8),
+			\fader7 -> NKController.new(9),
+			\fader8 -> NKController.new(12),
+			\fader9 -> NKController.new(13),
+			
+			\knob1 -> NKController.new(14),
+			\knob2 -> NKController.new(15),
+			\knob3 -> NKController.new(16),
+			\knob4 -> NKController.new(17),
+			\knob5 -> NKController.new(18),
+			\knob6 -> NKController.new(19),
+			\knob7 -> NKController.new(20),
+			\knob8 -> NKController.new(21),
+			\knob9 -> NKController.new(22),
+
 		];	
-		
-		responders = IdentityDictionary.new(faders.size);
-		fader1  = NKController.new(2);
-		button1 = NKController.new(23);
 		
 	}
 	
-	// control is a symbol eg: \fader1, \topButton1, \knob3...
-	addResponder{|control, action|
-		// if the control is not known throw a warning	
-		var ccr = CCResponder({|src, chan, num, vel| 
-			action.value(vel);  // to make explicit use of velocity, we pass it as a param
-		}, num:faders[control]);
-		
-		// only 1 responder per control. remove if already there
-		if (responders[control] != nil,{
-			("removing " ++ control ++ " from responders").postln;
-			this.removeResponder(control);
-		});
-		responders.put(control, ccr);
-	}
 	
 	/*
 	doesNotUnderstand { arg selector ... args;
@@ -81,16 +71,7 @@ NanoKontrol {
 		//DoesNotUnderstandError(this, selector, args).throw;
 	}
 	*/
-	removeResponder{|control|
-		responders[control].remove;
-		responders.removeAt(control);
-	}
 	
-	// to allow n[\fader1]
-	at{|key|
-		^faders.at(key)
-	}
-
 }
 
 NKController {
@@ -106,10 +87,9 @@ NKController {
 		num = n;
 	}
 	
-	
 	onChanged{|action|
-		// remove if already assigned
-		if (responder != nil, {responder.remove;});
+		
+		if (responder != nil, {responder.remove;}); // remove if already assigned
 
 		responder = CCResponder({|src, chan, num, vel| 
 			action.value(vel);  // to make explicit use of velocity, we pass it as a param
@@ -119,29 +99,10 @@ NKController {
 
 }
 
-/*
-NKController {
-	
-	var <num;
-	
-	*new{
-		^super.new.initNanoKontrol;
-	}
-	
-	onChanged{|action|
-		var ccr = CCResponder({|src, chan, num, vel| 
-			action.value(vel);  // to make explicit use of velocity, we pass it as a param
-		}, num:faders[control]);
-		
-	}
-	
-	
-}
-
 NKFader : NKController {
 	
 	onPress{}
 	onRelease{}
 	onToggle{}
 	
-}*/
+}
