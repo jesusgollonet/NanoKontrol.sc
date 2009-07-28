@@ -26,6 +26,11 @@
 	TODO: 
 		x add the rest of the controllers
 		x make the syntax more intuitive (n.button.onChanged)
+
+		- make collections: for 
+			faders.do({})
+			knobs.do({})
+		- implement a .onPress = {} style instead of onPress({})
 		- implement scenes
 		
 */
@@ -33,7 +38,7 @@
 NanoKontrol {
 	
 	var <controllers;
-
+	
 	*new{
 		^super.new.initNanoKontrol;
 	}
@@ -60,15 +65,15 @@ NanoKontrol {
 			\knob8 -> NKController.new(21),
 			\knob9 -> NKController.new(22),
 			
-			\topBt1 -> NKController.new(23),
-			\topBt2 -> NKController.new(24),
-			\topBt3 -> NKController.new(25),
-			\topBt4 -> NKController.new(26),
-			\topBt5 -> NKController.new(27),
-			\topBt6 -> NKController.new(28),
-			\topBt7 -> NKController.new(29),
-			\topBt8 -> NKController.new(30),
-			\topBt9 -> NKController.new(31),
+			\topBt1 -> NKButton.new(23),
+			\topBt2 -> NKButton.new(24),
+			\topBt3 -> NKButton.new(25),
+			\topBt4 -> NKButton.new(26),
+			\topBt5 -> NKButton.new(27),
+			\topBt6 -> NKButton.new(28),
+			\topBt7 -> NKButton.new(29),
+			\topBt8 -> NKButton.new(30),
+			\topBt9 -> NKButton.new(31),
 			
 			\bottomBt1 -> NKButton.new(33),
 			\bottomBt2 -> NKButton.new(34),
@@ -95,8 +100,6 @@ NanoKontrol {
 	doesNotUnderstand { arg selector ... args;
 		
 		var controller = controllers.at(selector);
-		"the controller is".postln;
-		controller.postln;
 		^ controller ?? {super.doesNotUnderstand( selector, args)};
 	}
 	
