@@ -1,50 +1,26 @@
 /*
-- straight use of the NanoKontrol for Supercollider
-- I'd like something like 
-
-	n = NanoKontrol.new
-	// don't take scenes into account
-	n.fader2.addResponder(\respName, {
-		
-	});
-	
-	or better yet
-	n.fader2.onChanged({|vel|
-		
-	})
-	
-	n.topButton1.onPressed({
-		
-	})
-	to make it 
-	// 
-	
-	
-
-*/
-/*
 	TODO: 
-		x add the rest of the controllers
-		x make the syntax more intuitive (n.button.onChanged)
 
 		- make collections: for 
 			faders.do({})
 			knobs.do({})
-		- implement a .onPress = {} style instead of onPress({})
 		- implement scenes
 		
 */
 
 NanoKontrol {
 
+	var faders, knobs, topBts, bottomBts, transportBts;
 	var <controllers;
+	
 	
 	*new{
 		^super.new.initNanoKontrol;
 	}
 	
-	initNanoKontrol{		
-		controllers = IdentityDictionary[
+	initNanoKontrol{	
+		
+		faders = IdentityDictionary[
 			\fader1 -> NKController.new(2),
 			\fader2 -> NKController.new(3),
 			\fader3 -> NKController.new(4),
@@ -53,8 +29,10 @@ NanoKontrol {
 			\fader6 -> NKController.new(8),
 			\fader7 -> NKController.new(9),
 			\fader8 -> NKController.new(12),
-			\fader9 -> NKController.new(13),
-			
+			\fader9 -> NKController.new(13)
+		];
+		
+		knobs = IdentityDictionary[
 			\knob1 -> NKController.new(14),
 			\knob2 -> NKController.new(15),
 			\knob3 -> NKController.new(16),
@@ -63,8 +41,10 @@ NanoKontrol {
 			\knob6 -> NKController.new(19),
 			\knob7 -> NKController.new(20),
 			\knob8 -> NKController.new(21),
-			\knob9 -> NKController.new(22),
-			
+			\knob9 -> NKController.new(22)
+		];
+		
+		topBts = IdentityDictionary[
 			\topBt1 -> NKButton.new(23),
 			\topBt2 -> NKButton.new(24),
 			\topBt3 -> NKButton.new(25),
@@ -73,8 +53,10 @@ NanoKontrol {
 			\topBt6 -> NKButton.new(28),
 			\topBt7 -> NKButton.new(29),
 			\topBt8 -> NKButton.new(30),
-			\topBt9 -> NKButton.new(31),
-			
+			\topBt9 -> NKButton.new(31)
+		];
+
+		bottomBts = IdentityDictionary[
 			\bottomBt1 -> NKButton.new(33),
 			\bottomBt2 -> NKButton.new(34),
 			\bottomBt3 -> NKButton.new(35),
@@ -83,8 +65,10 @@ NanoKontrol {
 			\bottomBt6 -> NKButton.new(38),
 			\bottomBt7 -> NKButton.new(39),
 			\bottomBt8 -> NKButton.new(40),
-			\bottomBt9 -> NKButton.new(41),
-			
+			\bottomBt9 -> NKButton.new(41)
+		];
+		
+		transportBts= IdentityDictionary[
 			\playBt   -> NKButton.new(45),
 			\stopBt   -> NKButton.new(46),
 			\rectBt   -> NKButton.new(44),
@@ -92,6 +76,9 @@ NanoKontrol {
 			\ffwBt    -> NKButton.new(48),
 			\loopBt   -> NKButton.new(49)
 		];	
+	
+		controllers = IdentityDictionary.new;
+		controllers.putAll(faders, knobs, topBts, bottomBts, transportBts);
 		
 	}
 	
