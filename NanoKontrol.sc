@@ -36,14 +36,14 @@
 */
 
 NanoKontrol {
-	
+
 	var <controllers;
 	
 	*new{
 		^super.new.initNanoKontrol;
 	}
 	
-	initNanoKontrol{
+	initNanoKontrol{		
 		controllers = IdentityDictionary[
 			\fader1 -> NKController.new(2),
 			\fader2 -> NKController.new(3),
@@ -95,14 +95,10 @@ NanoKontrol {
 		
 	}
 	
-	
-	
-	doesNotUnderstand { arg selector ... args;
-		
+	doesNotUnderstand { arg selector ... args;	
 		var controller = controllers.at(selector);
 		^ controller ?? {super.doesNotUnderstand( selector, args)};
 	}
-	
 	
 }
 
@@ -119,25 +115,27 @@ NKController {
 		num = n;
 	}
 	
-	onChanged{|action|
+	// setter for responder
+	onChanged_ { |action| 
 		if (responder != nil, {responder.remove;}); // remove if already assigned
 
 		responder = CCResponder({|src, chan, num, vel| 
 			action.value(vel);  // to make explicit use of velocity, we pass it as a param
 		}, num:num);
+
 	}
 	
 	removeResponders{
 		if (responder != nil, {responder.remove;}); // remove if already assigned
 	}
-	
+
 }
 
 NKButton : NKController {
 	
 	var pressResponder, releaseResponder;
 	
-	onPress{|action|
+	onPress_{|action|
 		if (pressResponder != nil, {pressResponder.remove;}); // remove if already assigned
 
 		pressResponder = CCResponder({|src, chan, num, vel| 
@@ -145,7 +143,7 @@ NKButton : NKController {
 		}, num:num);
 	}
 
-	onRelease{|action|
+	onRelease_{|action|
 		if (releaseResponder != nil, {releaseResponder.remove;}); // remove if already assigned
 
 		releaseResponder = CCResponder({|src, chan, num, vel| 
