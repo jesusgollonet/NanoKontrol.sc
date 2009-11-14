@@ -71,7 +71,7 @@ NanoKontrol {
 		transportBts= IdentityDictionary[
 			\playBt   -> NKButton.new(45),
 			\stopBt   -> NKButton.new(46),
-			\rectBt   -> NKButton.new(44),
+			\recBt   -> NKButton.new(44),
 			\rewindBt -> NKButton.new(47),
 			\ffwBt    -> NKButton.new(48),
 			\loopBt   -> NKButton.new(49)
