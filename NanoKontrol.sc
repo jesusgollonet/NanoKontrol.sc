@@ -79,12 +79,20 @@ NanoKontrol {
 	
 		controllers = IdentityDictionary.new;
 		controllers.putAll(faders, knobs, topBts, bottomBts, transportBts);
-		
+
 	}
 	
 	doesNotUnderstand { arg selector ... args;	
 		var controller = controllers.at(selector);
 		^ controller ?? {super.doesNotUnderstand( selector, args)};
+	}
+	
+	removeAllResponders {
+		controllers.do({|cDict|
+			cDict.do({|c|
+				c.removeResponders;
+			})
+		});
 	}
 	
 }
