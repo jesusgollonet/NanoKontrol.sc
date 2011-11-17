@@ -21,6 +21,18 @@ n.topBt1.onRelease = { "top button 1 released".postln;}
 
 n.knob1.onChanged  = {|vel| "knob 1 changed".postln; v.postln;}
 
+// assign to a collection
+// faders 1-9
+n.faders.do{|fader, i| 
+    fader.onChanged= {|val| ("fader"+(i+1)).postln; val.postln }
+};
+
+// assign knobs 1-4 only
+n.knobs[..3].do{|knob| knob.onChanged= {|val| val.postln } };
+
+// remove all MIDI responders
+n.removeAll;
+
 // controller names ---------------------------
 fader1...9
 knob1...9
@@ -36,12 +48,5 @@ playBt, stopBt, recBt, loopBt, loopBt, rewindBt, ffwBt
 - onPress, onRelease: buttons
 - all actions receive the controllore velocity as an argument
 
-
 // TODO --------------------------------------
-- implement collections for quick assignment of related controllers
-	ie:
-	// (not implemented)
-	n.faders.do({|f|
-		f.postln;
-	})
 - implement scenes
