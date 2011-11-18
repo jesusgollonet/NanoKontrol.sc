@@ -145,11 +145,11 @@ NKButton : NKController {
     var pressresp, releaseresp;
 
     onPress_{|action|
-        pressresp= MIDIdef.cc(key ++ "press", {|val| if(val==127, { action.value(val) }) }, num);
+        pressresp= MIDIdef.cc((key++"press").asSymbol, {|val| if(val==127, { action.value(val) }) }, num);
     }
 
     onRelease_{|action|
-        releaseresp= MIDIdef.cc(key ++ "release", {|val| if(val==0, { action.value(val) }) }, num);
+        releaseresp= MIDIdef.cc((key++"release").asSymbol, {|val| if(val==0, { action.value(val) }) }, num);
     }
 
     free{
