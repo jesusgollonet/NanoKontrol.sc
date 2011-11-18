@@ -44,36 +44,36 @@ NanoKontrol {
         ];
         
         topBtsgroup= IdentityDictionary[
-            \topBt1 -> NKController(\topBt1, 23),
-            \topBt2 -> NKController(\topBt2, 24),
-            \topBt3 -> NKController(\topBt3, 25),
-            \topBt4 -> NKController(\topBt4, 26),
-            \topBt5 -> NKController(\topBt5, 27),
-            \topBt6 -> NKController(\topBt6, 28),
-            \topBt7 -> NKController(\topBt7, 29),
-            \topBt8 -> NKController(\topBt8, 30),
-            \topBt9 -> NKController(\topBt9, 31)
+            \topBt1 -> NKButton(\topBt1, 23),
+            \topBt2 -> NKButton(\topBt2, 24),
+            \topBt3 -> NKButton(\topBt3, 25),
+            \topBt4 -> NKButton(\topBt4, 26),
+            \topBt5 -> NKButton(\topBt5, 27),
+            \topBt6 -> NKButton(\topBt6, 28),
+            \topBt7 -> NKButton(\topBt7, 29),
+            \topBt8 -> NKButton(\topBt8, 30),
+            \topBt9 -> NKButton(\topBt9, 31)
         ];
 
         bottomBtsgroup= IdentityDictionary[
-            \bottomBt1 -> NKController(\bottomBt1, 33),
-            \bottomBt2 -> NKController(\bottomBt2, 34),
-            \bottomBt3 -> NKController(\bottomBt3, 35),
-            \bottomBt4 -> NKController(\bottomBt4, 36),
-            \bottomBt5 -> NKController(\bottomBt5, 37),
-            \bottomBt6 -> NKController(\bottomBt6, 38),
-            \bottomBt7 -> NKController(\bottomBt7, 39),
-            \bottomBt8 -> NKController(\bottomBt8, 40),
-            \bottomBt9 -> NKController(\bottomBt9, 41)
+            \bottomBt1 -> NKButton(\bottomBt1, 33),
+            \bottomBt2 -> NKButton(\bottomBt2, 34),
+            \bottomBt3 -> NKButton(\bottomBt3, 35),
+            \bottomBt4 -> NKButton(\bottomBt4, 36),
+            \bottomBt5 -> NKButton(\bottomBt5, 37),
+            \bottomBt6 -> NKButton(\bottomBt6, 38),
+            \bottomBt7 -> NKButton(\bottomBt7, 39),
+            \bottomBt8 -> NKButton(\bottomBt8, 40),
+            \bottomBt9 -> NKButton(\bottomBt9, 41)
         ];
         
         transportBtsgroup= IdentityDictionary[
-            \playBt   -> NKController(\playBt,   45),
-            \stopBt   -> NKController(\stopBt,   46),
-            \recBt    -> NKController(\recBt,    44),
-            \rewindBt -> NKController(\rewindBt, 47),
-            \ffwBt    -> NKController(\ffwBt,    48),
-            \loopBt   -> NKController(\loopBt,   49)
+            \playBt   -> NKButton(\playBt,   45),
+            \stopBt   -> NKButton(\stopBt,   46),
+            \recBt    -> NKButton(\recBt,    44),
+            \rewindBt -> NKButton(\rewindBt, 47),
+            \ffwBt    -> NKButton(\ffwBt,    48),
+            \loopBt   -> NKButton(\loopBt,   49)
         ];  
 
         controllers= IdentityDictionary.new;
@@ -126,7 +126,6 @@ NKController {
     
     var <key, <num;
     var responder;
-    var pressresp, releaseresp;
 
     *new{|... args|
         ^super.newCopyArgs(*args);
@@ -136,6 +135,15 @@ NKController {
         responder= MIDIdef.cc(key, {|val| action.value(val) }, num);
     }
     
+    free{
+        responder.free;
+    }
+}
+
+NKButton : NKController {
+
+    var pressresp, releaseresp;
+
     onPress_{|action|
         pressresp= MIDIdef.cc(key ++ "press", {|val| if(val==127, { action.value(val) }) }, num);
     }
@@ -145,6 +153,7 @@ NKController {
     }
 
     free{
-        [ responder, pressresp, releaseresp ].do(_.free);
+        pressresp.free;
+        releaseresp.free;
     }
 }
